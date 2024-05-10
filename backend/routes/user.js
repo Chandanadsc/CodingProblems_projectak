@@ -29,9 +29,10 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { username, email, password } = req.body;
-  if (username && email && password) {
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+  const { email, password } = req.body;
+  if (email && password) {
+    const existingUser = await User.findOne({ email });
+
     if (existingUser) {
       try {
         const result = await bcrypt.compare(password, existingUser.password);

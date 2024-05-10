@@ -2,16 +2,19 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/user");
+const adminRouter = require("./routes/admin");
+const subscriptionRouter = require("./routes/SubscriptionRoutes");
 const cors = require("cors");
 
 const { MONGODB_URI } = process.env;
-console.log("MONGODB_URI:", MONGODB_URI); // Check if MONGODB_URI is correctly loaded
+console.log("MONGODB_URI:", MONGODB_URI);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/user", userRouter);
-
+app.use("/admin", adminRouter);
+app.use("/subscription", subscriptionRouter);
 mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,

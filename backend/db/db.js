@@ -9,6 +9,10 @@ const UserSchema = mongoose.Schema({
     enum: ["user", "admin"],
     default: "user",
   },
+  subscriptionStatus: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const User = mongoose.model("User", UserSchema);
