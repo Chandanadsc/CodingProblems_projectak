@@ -57,6 +57,10 @@ const sendCodingProblems = async () => {
 
       console.log("Message sent to", user.email, ":", info.messageId);
     }
+    await CodingProblem.deleteMany({
+      _id: { $in: codingProblems.map((p) => p._id) },
+    });
+
     console.log("All emails sent successfully.");
   } catch (error) {
     console.error("Send coding problems error:", error);
