@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/user");
 const adminRouter = require("./routes/admin");
 const subscriptionRouter = require("./routes/SubscriptionRoutes");
+const problems = require("./routes/problems");
 const cors = require("cors");
 
 const { MONGODB_URI } = process.env;
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/subscription", subscriptionRouter);
+app.use("/problemsgetter", problems);
 mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,

@@ -5,8 +5,8 @@ const router = express.Router();
 router.use(express.json());
 
 router.post("/addProblem", async (req, res) => {
-  const { title, link, difficulty } = req.body;
-  if (title && link && difficulty) {
+  const { title, link, tags } = req.body;
+  if (title && link && tags) {
     try {
       const existingProblem = await CodingProblem.findOne({ link });
       if (existingProblem) {
@@ -14,7 +14,7 @@ router.post("/addProblem", async (req, res) => {
           message: "This problem already exists in the database",
         });
       } else {
-        const newProblem = new CodingProblem({ title, link, difficulty });
+        const newProblem = new CodingProblem({ title, link, tags });
         await newProblem.save();
         return res.status(200).json({
           message: "New coding problem successfully added to the database",
@@ -26,7 +26,7 @@ router.post("/addProblem", async (req, res) => {
     }
   } else {
     return res.status(400).json({
-      message: "All three fields (title, link, and difficulty) are required",
+      message: "All three fields (title, link, and tags) are required",
     });
   }
 });
@@ -57,4 +57,15 @@ router.delete("/removeProblem", async (req, res) => {
   }
 });
 
+router.delete("/deleteAll", async (req, res) => {
+  try {
+    await CodingProblem.deleteMany({});
+    res
+      .status(200)
+      .json({ message: "All coding problems deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting coding problems:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 module.exports = router;

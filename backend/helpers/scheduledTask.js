@@ -14,7 +14,7 @@ const sendCodingProblems = async () => {
     const subscribedUsers = await User.find({ subscriptionStatus: true });
     console.log(subscribedUsers);
     console.log("Fetching coding problems...");
-    const codingProblems = await CodingProblem.find().limit(2);
+    const codingProblems = await CodingProblem.find().limit(3);
     console.log(codingProblems);
 
     if (subscribedUsers.length === 0) {
@@ -45,7 +45,7 @@ const sendCodingProblems = async () => {
       emailContent += "<p>Here are your coding problems for today:</p>";
 
       for (const problem of codingProblems) {
-        emailContent += `<p><a href="${problem.link}">${problem.title}</a> (${problem.difficulty})</p>`;
+        emailContent += `<p><a href="${problem.link}">${problem.title}</a> (${problem.tags})</p>`;
       }
 
       const info = await transporter.sendMail({
@@ -61,12 +61,11 @@ const sendCodingProblems = async () => {
   } catch (error) {
     console.error("Send coding problems error:", error);
   } finally {
-    // Close MongoDB connection
     mongoose.disconnect();
   }
 };
-
-cron.schedule("* * * * *", () => {
-  console.log("Running scheduled task...");
-  sendCodingProblems();
-});
+sendCodingProblems();
+// cron.schedule("* * * * *", () => {
+//   console.log("Running scheduled task...");
+//
+// });
